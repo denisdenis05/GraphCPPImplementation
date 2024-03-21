@@ -19,7 +19,51 @@ bool Graph::removeNode(int nodeId){
 }
 
 bool Graph::checkIfNodeExists(int nodeId){
+    // Checks if an edge exists between two specified nodes. Returns True if node is in the graph, False otherwise
+
     if(this->nodes.find(nodeId) != this->nodes.end())
         return true;
     return false;
 }
+
+int Graph::checkIfExistsEdgeFromNodeToNode(int source, int destination){
+    // Checks if an edge exists between two specified nodes. Returns the Edge ID if found, -1 if does not exist
+
+    for (auto i = edges.cbegin(); i != edges.cend(); i++) {
+        int edgeId = i->first;
+        std::pair<int, int> endpoints = i->second;
+        if (endpoints.first == source and endpoints.second == destination)
+            return edgeId;
+    }
+    return -1;
+}
+
+void Graph::addEdge(int source, int destination, int edgeId, int cost){
+    std::pair<int, int> endpoints;
+    endpoints.first = source;
+    endpoints.second = destination;
+    this->edges[edgeId] = endpoints;
+    this->edgeCosts[edgeId] = cost;
+}
+
+bool Graph::removeEdgeById(int edgeId){
+    if(this->edges.find(edgeId) != this->edges.end()){
+        this->nodes.erase(edgeId);
+        return true;
+    }
+    return false;
+}
+
+bool Graph::removeEdgeByNodes(int source, int destination){
+    int edgeId = this->checkIfExistsEdgeFromNodeToNode(source, destination);
+    if (edgeId == -1)
+        return false;
+    this->edges.erase(edgeId);
+    this->edgeCosts.erase(edgeId);
+    return true;
+}
+
+void Graph::setEdgeCost(int edgeId, int cost){
+    this->edgeCosts[edgeId] = cost;
+}
+

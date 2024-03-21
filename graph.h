@@ -14,5 +14,10 @@ public:
     void createNode(int nodeId);
     bool removeNode(int nodeId);
     bool checkIfNodeExists(int nodeId);
+    int checkIfExistsEdgeFromNodeToNode(int source, int destination);
+    void addEdge(int source, int destination, int edgeId, int cost=0);
+    bool removeEdgeById(int edgeId);
+    bool removeEdgeByNodes(int source, int destination);
+    void setEdgeCost(int edgeId, int cost);
 
 };
