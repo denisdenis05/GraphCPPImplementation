@@ -67,3 +67,41 @@ void Graph::setEdgeCost(int edgeId, int cost){
     this->edgeCosts[edgeId] = cost;
 }
 
+int Graph::getNumberOfNodes(){
+    return this->nodes.size();
+}
+
+int Graph::getNumberOfEdges(){
+    return this->edges.size();
+}
+
+std::pair<int, int> Graph::getEdgeEndpoints(int edgeId){
+    return this->edges[edgeId];
+}
+
+bool Graph::hasEdge(int source, int destination){
+    return this->checkIfExistsEdgeFromNodeToNode(source, destination) != -1;
+}
+
+int Graph::getOutDegree(int source){
+    int degree = 0;
+    for (auto i = edges.cbegin(); i != edges.cend(); i++) {
+        int edgeId = i->first;
+        std::pair<int, int> endpoints = i->second;
+        if (endpoints.first == source)
+            degree++;
+    }
+    return degree;
+}
+
+int Graph::getInDegree(int destination){
+    int degree = 0;
+    for (auto i = edges.cbegin(); i != edges.cend(); i++) {
+        int edgeId = i->first;
+        std::pair<int, int> endpoints = i->second;
+        if (endpoints.second == destination)
+            degree++;
+    }
+    return degree;
+}
+

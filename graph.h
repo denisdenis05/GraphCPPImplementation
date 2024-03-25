@@ -19,5 +19,13 @@ public:
     bool removeEdgeById(int edgeId);
     bool removeEdgeByNodes(int source, int destination);
     void setEdgeCost(int edgeId, int cost);
+    int getNumberOfNodes();
+    int getNumberOfEdges();
+    std::pair<int, int> getEdgeEndpoints(int edgeId);
+    bool hasEdge(int source, int destination);
+    int getOutDegree(int source);
+    int getInDegree(int source);
+
+
 
 };
