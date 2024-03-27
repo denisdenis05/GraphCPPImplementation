@@ -8,6 +8,12 @@ private:
     std::unordered_map<int, std::pair<int, int>> edges; // edge[edgeId] = (source, destination)
     std::unordered_map<int, int> edgeCosts; // edge[edgeId] = cost of edge
     int latestGeneratedEdgeId;
+    int currentNodeIteratorPosition;
+    int currentEdgeIteratorPosition;
+    int currentOutboundIteratorPosition;
+    int currentSourceNodeIteratorId;
+    int currentInboundIteratorPosition;
+    int currentDestinationNodeIteratorId;
 
 public:
     Graph();
@@ -26,6 +32,11 @@ public:
     int getOutDegree(int source);
     int getInDegree(int source);
 
+    int getEdgeIdPrice(int edgeId);
+    int getEdgeNodesPrice(int source, int destination);
+    int parseNodes();
+    int parseEdges();
+    int parseOutboundEdges(int nodeId);
 
 
 };
