@@ -2,10 +2,10 @@
 
 Graph::Graph(){
     this->latestGeneratedEdgeId = 0;
-    this->currentNodeIteratorPosition = 0;
-    this->currentEdgeIteratorPosition = 0;
-    this->currentInboundIteratorPosition = 0;
-    this->currentOutboundIteratorPosition = 0;
+//    this->currentNodeIteratorPosition = 0;
+//    this->currentEdgeIteratorPosition = 0;
+//    this->currentInboundIteratorPosition = 0;
+//    this->currentOutboundIteratorPosition = 0;
 }
 
 void Graph::createNode(int nodeId){
@@ -72,11 +72,11 @@ void Graph::setEdgeCost(int edgeId, int cost){
     this->edgeCosts[edgeId] = cost;
 }
 
-int Graph::getNumberOfNodes(){
+int Graph::getNumberOfNodes() const{
     return this->nodes.size();
 }
 
-int Graph::getNumberOfEdges(){
+int Graph::getNumberOfEdges() const{
     return this->edges.size();
 }
 
@@ -99,7 +99,7 @@ int Graph::getOutDegree(int source){
     return degree;
 }
 
-int Graph::getInDegree(int destination){
+int Graph::getInDegree(int destination) {
     int degree = 0;
     for (auto i = edges.cbegin(); i != edges.cend(); i++) {
         int edgeId = i->first;
@@ -110,8 +110,25 @@ int Graph::getInDegree(int destination){
     return degree;
 }
 
-// TODO def getOutEdges(self, source):
-// TODO def getInEdges(self, destination):
+std::unordered_map<int, std::pair<int, int>> Graph::getOutEdges(int source) {
+    std::unordered_map<int, std::pair<int, int>> outEdges;
+    for (const auto& edge : edges) {
+        if (edge.second.first == source) {
+            outEdges[edge.first] = edge.second;
+        }
+    }
+    return outEdges;
+}
+
+std::unordered_map<int, std::pair<int, int>> Graph::getInEdges(int destination) {
+    std::unordered_map<int, std::pair<int, int>> inEdges;
+    for (const auto& edge : edges) {
+        if (edge.second.second == destination) {
+            inEdges[edge.first] = edge.second;
+        }
+    }
+    return inEdges;
+}
 
 int  Graph::getEdgeIdPrice(int edgeId){
     return this->edgeCosts[edgeId];
@@ -124,33 +141,39 @@ int Graph::getEdgeNodesPrice(int source, int destination){
     return this->getEdgeIdPrice(edgeId);
 }
 
-int Graph::parseNodes(){
-    auto iterator = this->nodes.find(this->currentNodeIteratorPosition);
-    this->currentNodeIteratorPosition++;
-    if (this->currentNodeIteratorPosition == this->getNumberOfNodes())
-        this->currentNodeIteratorPosition = 0;
-    return iterator->first;
-}
-
-int Graph::parseEdges(){
-    auto iterator = this->edges.find(this->currentEdgeIteratorPosition);
-    this->currentEdgeIteratorPosition++;
-    if (this->currentEdgeIteratorPosition == this->getNumberOfNodes())
-        this->currentEdgeIteratorPosition = 0;
-    return iterator->first;
-}
-
-
-int Graph::parseOutboundEdges(int nodeId){
-    if (this->currentSourceNodeIteratorId != nodeId){
-        this->currentSourceNodeIteratorId = nodeId;
-        this->currentOutboundIteratorPosition = 0;
-    }
-    for (auto i = edges.cbegin(); i != edges.cend(); i++) { // TODO fix this, needs to go from latest returned edge+1
-        std::pair<int, int> endpoints = i->second;
-        int sourceNode = endpoints.first;
-        if (sourceNode == nodeId){
-            // TODO return node, update node
+int Graph::getNodeFromPosition(int nodePosition) {
+    int currentPosition = 0;
+    for (auto it = this->nodes.begin(); it != this->nodes.end(); ++it) {
+        if (currentPosition == nodePosition) {
+            return it->first;
         }
+        ++currentPosition;
+    }
+}
+int Graph::getEdgeFromPosition(int edgePosition) {
+    int currentPosition = 0;
+    for (auto it = this->edges.begin(); it != this->edges.end(); ++it) {
+        if (currentPosition == edgePosition) {
+            return it->first;
+        }
+        ++currentPosition;
+    }
+}
+
+
+
+
+
+
+std::pair<int, int> Graph::getEdge(int edgeId) {
+    return this->edges[edgeId];
+}
+
+int Graph::getEdgeCost(int edgeId) {
+    auto it = edgeCosts.find(edgeId);
+    if (it != edgeCosts.end()) {
+        return it->second;
+    } else {
+        return 0;
     }
 }
